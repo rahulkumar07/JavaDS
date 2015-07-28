@@ -1,3 +1,7 @@
+/*
+This is just a implement of algo suggested by 2.5.3 String Pattern Matching- Skiena
+*/
+
 import java.util.ArrayList;
 
 
