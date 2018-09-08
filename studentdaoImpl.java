@@ -293,7 +293,7 @@ public class studentDaoImpl extends HibernateDaoSupport implements studentDao {
         StudentDetailsMapping studentdetailsmapping=null;
         try{String sql="";
                 sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from CImaster c,Disciplinemaster d,User u,Programmaster p,";
-                sql=sql+"Studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId  and  u.userId=s.userId ";
+                sql=sql+"Studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid  and  u.userId=s.userId ";
                 if(ciId>0){
                     sql=sql + " and c.ciId="+ciId+" ";
                 }
@@ -391,7 +391,7 @@ public class studentDaoImpl extends HibernateDaoSupport implements studentDao {
         StudentDetailsMapping studentdetailsmapping=null;
         try{String sql="";
                 sql="select distinct s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from cimaster  c,disciplinemaster d,User u,programmaster p,";
-                sql=sql+"studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  u.userId=s.userId ";
+                sql=sql+"studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  u.userId=s.userId ";
                 if(ciId>0){
                     sql=sql + " and c.ciId="+ciId+" ";
                 }
@@ -574,7 +574,7 @@ public List viewNewStudentsByName(String studentName, String loggedInUser) {
             
             sql="select distinct  s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from cimaster  c,disciplinemaster d,User u,programmaster p,";
                 sql=sql+"studentmaster s,CIDAMapping z where c.ciId=s.ciId and d.disciplineId=s.disId and ";
-                 sql=sql + "p.programId=s.programId and z.ciId=s.ciId  and u.userId=z.userId  and z.userId="+userId.getUserId()+"";
+                 sql=sql + "p.programId=s.programid_programid and z.ciId=s.ciId  and u.userId=z.userId  and z.userId="+userId.getUserId()+"";
                  
                  if(dsId!=0){
                    sql=sql + "  and z.disId=s.disId";
@@ -585,7 +585,7 @@ public List viewNewStudentsByName(String studentName, String loggedInUser) {
             
        /*     sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from ";
             sql=sql+"CIDAMapping a,UserRole b,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,User u,Role r where u.userId=a.userId and c.ciId=s.ciId and ";
-            sql=sql+"d.disciplineId=s.disId and p.programId=s.programId and u.userId=b.userId and c.ciId=a.ciId and r.roleId=b.roleId ";
+            sql=sql+"d.disciplineId=s.disId and p.programId=s.programid_programid and u.userId=b.userId and c.ciId=a.ciId and r.roleId=b.roleId ";
             sql=sql + " and u.userId="+userId.getUserId()+" order by d.disciplineName,p.programName,s.fullName";*/
                 
             studentList=getHibernateTemplate().find(sql);
@@ -612,11 +612,11 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             String sql="";
             sql="select distinct  s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from cimaster  c,disciplinemaster d,User u,programmaster p,";
                 sql=sql+"studentmaster s,CIDAMapping z where c.ciId=s.ciId and d.disciplineId=s.disId and ";
-                 sql=sql + "p.programId=s.programId and z.ciId=s.ciId  and u.userId=z.userId  and z.userId="+userId.getUserId()+"";
+                 sql=sql + "p.programId=s.programid_programid and z.ciId=s.ciId  and u.userId=z.userId  and z.userId="+userId.getUserId()+"";
                  
           /*  sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from ";
             sql=sql+"CIDAMapping a,UserRole b,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,User u,Role r where u.userId=a.userId and c.ciId=s.ciId and ";
-            sql=sql+"d.disciplineId=s.disId and p.programId=s.programId and u.userId=b.userId and c.ciId=a.ciId and r.roleId=b.roleId ";
+            sql=sql+"d.disciplineId=s.disId and p.programId=s.programid_programid and u.userId=b.userId and c.ciId=a.ciId and r.roleId=b.roleId ";
             sql=sql + " and u.userId="+userId.getUserId()+" order by d.disciplineName,p.programName,s.fullName";*/
             studentList=getHibernateTemplate().find(sql);
             if(studentList.size()>0){
@@ -650,7 +650,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                 sql=sql+"ADCIMapping a,";
             }
             sql=sql + "UserRole b,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,User u,Role r where u.userId=a.userId and c.ciId=s.ciId and ";
-            sql=sql+"d.disciplineId=s.disId and p.programId=s.programId and u.userId=b.userId and c.ciId=a.ciId and r.roleId=b.roleId ";
+            sql=sql+"d.disciplineId=s.disId and p.programId=s.programid_programid and u.userId=b.userId and c.ciId=a.ciId and r.roleId=b.roleId ";
             sql=sql + " and u.userId="+userId.getUserId()+" order by s.fullName";
             studentList=getHibernateTemplate().find(sql);
             if(studentList.size()>0){
@@ -678,7 +678,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
             String sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from ";
             sql=sql+"FacultyStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,facultymaster f where f.facultyId=a.facultyId.facultyId ";
-            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId ";
+            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId_ciId and d.disciplineId=s.disId_disciplineId and p.programId=s.programid_programid ";
             sql=sql+" and a.facultyId="+facultyId.getFacultyId()+" order by s.fullName";
             studentList=getHibernateTemplate().find(sql);
             if(studentList.size()>0){
@@ -709,7 +709,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             String sql="";
             sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from ";
             sql=sql + "PhdDetailsmaster  a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId ";
-            sql=sql+"and p.programId=s.programId and s.personalId=a.personalId and a.acaProgram='Yes' and (a.printChk = null or a.printChk='No')  ";
+            sql=sql+"and p.programId=s.programid_programid and s.personalId=a.personalId and a.acaProgram='Yes' and (a.printChk = null or a.printChk='No')  ";
              if(ciId>0){
                     sql=sql + " and c.ciId="+ciId+" ";
                 }
@@ -776,7 +776,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             String sql="";
             sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from ";
             sql=sql + "PhdDetailsmaster  a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId ";
-            sql=sql+"and p.programId=s.programId and s.personalId=a.personalId and a.acaProgram='Yes' and (a.printChk = null or a.printChk='No')  ";
+            sql=sql+"and p.programId=s.programid_programid and s.personalId=a.personalId and a.acaProgram='Yes' and (a.printChk = null or a.printChk='No')  ";
              if(ciId>0){
                     sql=sql + " and c.ciId="+ciId+" ";
                 }
@@ -834,7 +834,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{ 
             String sql="select s.personalId,s.fullName,c.ciId,c.ciName,c.ciCode,s.academicYear,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName,p.programCode ";
             sql=sql+"from studentmaster s, ApprovalProcess ap,cimaster  c,disciplinemaster d,programmaster p ";
-            sql= sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s.enrolmentNo=' ' and ";
+            sql= sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s.enrolmentNo=' ' and ";
             sql=sql+"s.personalId=ap.personalId_personalId and";
             sql=sql+" ap.approvalTypeId.approvalTypeId=7  and approvalStatus='Approved' order by s.fullName";
             studentList=getHibernateTemplate().find(sql);  
@@ -861,7 +861,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             String sql="from a,coalesce(b.facultyName,'--') from (select s.personalId,coalesce(s.enrolNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,";
             sql=sql+"p.programId,p.programName,s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,d1.disabilityId,";
             sql=sql+"d1.disability,s.gender,s.academicYear from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1 ";
-            sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disabilityId=s.physicalChallanged ";
             if(ciId>0){
                 sql=sql + " and c.ciId="+ciId+" ";
@@ -919,25 +919,25 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,d1.disabilityId,d1.disability,s.gender,s.academicYear";
             if(year!=null && (programId==2 ||programId==3 || programId==4)){
                 sql=sql+",Case when (select count(*) from MidTermReview where personalId=s.personalId and semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else if(year!=null && (programId==5 || programId==6 || programId==10 || programId==11)){
                 sql=sql+",Case when (select count(*) from AnnualReview where personalId=s.personalId and year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
             }
             if(programId==5 || programId==6){
                 sql=sql+",Case when (select count(*) from VivaVoceReport where personalId=s.personalId and Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
             }
             if(programId==5 || programId==6){
                 sql=sql+",Case when (select count(*) from VivaVoceReport where personalId=s.personalId and Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+" and examType='vivavoce')>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+" and examType='vivavoce')>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -955,7 +955,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             }
             if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
                 sql=sql+",Case when (select count(*) from Submission where personalId=s.personalId and submissionType=3 and Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -963,7 +963,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             if(!courseCompleted.equals("Select")){
                 sql=sql+",Case when (select count(*) from PhdDetailsmaster  where personalId=s.personalId and acaProgram='Yes' and Year(DATE_FORMAT(certiDate,'%Y-%m-%d'))='"+academicYear+"' ";
                 if(programId>0){
-                    sql=sql+"and s.programId="+programId+" ";
+                    sql=sql+"and s.programid_programid="+programId+" ";
                 }
                 sql=sql + ")>0 then 'Yes' else 'No' End";
             }
@@ -973,7 +973,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             if(!certificateIssued.equals("Select")){
                 sql=sql+",Case when (select count(*) from PhdDetailsmaster  where personalId=s.personalId and printChk='Yes' and Year(DATE_FORMAT(comDate,'%Y-%m-%d'))='"+academicYear+"' ";
                 if(programId>0){
-                    sql=sql+"and s.programId="+programId+" ";
+                    sql=sql+"and s.programid_programid="+programId+" ";
                 }
                 sql=sql + ")>0 then 'Yes' else 'No' End";
             }
@@ -987,7 +987,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             if(!extensionFor.equals("0")){
                 sql=sql+",Extension ex,ApprovalProcess app,ApprovalType app1 ";
             }
-            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and u.userId=s.userId   ";
             if(ciId>0){
                 sql=sql + " and c.ciId="+ciId+" ";
@@ -1023,54 +1023,54 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             }
             if(programId==5 || programId==6 || programId==10 || programId==11){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" ";
-                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" ";
+                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
-                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
+                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
             }
             if(programId==2 || programId==3 || programId==4){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                 }
             }
             if(programId==5 || programId==6){
                 if(!ogceCompleted.equals("Select")){
                     if(ogceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(ogceCompleted.equals("Yes")){
-                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" ";
-                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+" ";
+                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" ";
+                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+" ";
                     }
                     if(ogceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+" ";
+                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+" ";
                     }
                 }
                 if(!vivaVoceCompleted.equals("Select")){
                     if(vivaVoceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(vivaVoceCompleted.equals("Yes")){
-                        sql=sql + "and s.personalId in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programId="+programId+" ";
+                        sql=sql + "and s.personalId in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programid_programid="+programId+" ";
                     }
                     if(vivaVoceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -1080,21 +1080,21 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     else if(extensionFor.equals("2"))approvalTypeId=3;
                     else if(extensionFor.equals("3"))approvalTypeId=4;
                     sql=sql+" and s.personalId=ex.personalId and s.personalId=app.personalId and s.academicYear='"+academicYear+"' ";
-                    sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programId="+programId +" ";
+                    sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programid_programid="+programId +" ";
                     sql=sql+" and app1.approvalTypeId=app.approvalTypeId ";
                 }
             }
             if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
                 if(!thesisSubmitted.equals("Select")){
                     if(thesisSubmitted.equals("All")){
-                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     else if(thesisSubmitted.equals("Yes")){
-                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" ";
+                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" ";
                     }
                     else if(thesisSubmitted.equals("No")){
-                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -1103,13 +1103,13 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     sql=sql + "and ((s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"')) or ";
                     sql=sql+"(s.personalId not in (select personalId from PhdDetails) and s.academicYear="+academicYear+")) ";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(courseCompleted.equals("Yes")){
                     sql=sql + "and s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"' and p.acaProgram='Yes')";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(courseCompleted.equals("No")){
@@ -1117,7 +1117,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     sql=sql + " and  ";
                     sql=sql+"(s.personalId not in (select personalId from PhdDetails) and s.academicYear="+academicYear+" ) ";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
             }
@@ -1126,19 +1126,19 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     sql=sql + " and (s.personalId in (select personalId from PhdDetailsmaster  where s.academicYear='"+academicYear+"' or comDate is null) or ";
                     sql=sql+"(s.personalId in (select personalId from PhdDetails) and s.academicYear="+academicYear+" and)) ";
                     if(programId>0){
-                        sql=sql+"and s.programId="+programId+" ";
+                        sql=sql+"and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("Yes")){
                     sql=sql + " and s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"' and p.printChk='Yes') ";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("No")){
                     sql=sql + " and s.personalId in (select personalId from PhdDetailsmaster  where printChk='No') and s.academicYear="+academicYear+"";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
             }
@@ -1181,25 +1181,25 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //    //        sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,d1.disabilityId,d1.disability,s.gender,s.academicYear";
 //            if(year!=null && (programId==2 ||programId==3 || programId==4)){
 //                sql=sql+",Case when (select count(*) from MidTermReview where personalId=s.personalId and semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
 //            }
 //            else if(year!=null && (programId==5 || programId==6 || programId==10 || programId==11)){
 //                sql=sql+",Case when (select count(*) from AnnualReview where personalId=s.personalId and year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
 //            }
 //            else{
 //               // sql=sql+",'--'";
 //            }
 //            if(programId==5 || programId==6){
 //                sql=sql+",Case when (select count(*) from VivaVoceReport where personalId=s.personalId and Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
 //            }
 //            else{
 //                //sql=sql+",'--'";
 //            }
 //            if(programId==5 || programId==6){
 //                sql=sql+",Case when (select count(*) from VivaVoceReport where personalId=s.personalId and Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+" and examType='vivavoce')>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+" and examType='vivavoce')>0 then 'Yes' else 'No' End";
 //            }
 //            else{
 //               // sql=sql+",'--'";
@@ -1217,7 +1217,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            }
 //            if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
 //                sql=sql+",Case when (select count(*) from Submission where personalId=s.personalId and submissionType=3 and Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
 //            }
 //            else{cre
 //               // sql=sql+",'--'";
@@ -1225,7 +1225,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            if(!courseCompleted.equals("Select")){
 //                sql=sql+",Case when (select count(*) from PhdDetailsmaster  where personalId=s.personalId and acaProgram='Yes' and Year(DATE_FORMAT(certiDate,'%Y-%m-%d'))='"+academicYear+"' ";
 //                if(programId>0){
-//                    sql=sql+"and s.programId="+programId+" ";
+//                    sql=sql+"and s.programid_programid="+programId+" ";
 //                }
 //                sql=sql + ")>0 then 'Yes' else 'No' End";
 //            }
@@ -1235,7 +1235,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            if(!certificateIssued.equals("Select")){
 //                sql=sql+",Case when (select count(*) from PhdDetailsmaster  where personalId=s.personalId and printChk='Yes' and Year(DATE_FORMAT(comDate,'%Y-%m-%d'))='"+academicYear+"' ";
 //                if(programId>0){
-//                    sql=sql+"and s.programId="+programId+" ";
+//                    sql=sql+"and s.programid_programid="+programId+" ";
 //                }
 //                sql=sql + ")>0 then 'Yes' else 'No' End";
 //            }
@@ -1253,7 +1253,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                 //sql=sql+",Extension ex,ApprovalProcess app,ApprovalType app1 ";
                 sql=sql+",Extension ex ";
             }
-            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and u.userId=s.userId ";
             if(university>0){
                 sql=sql+"and s.personalId=sq.personalId  ";
@@ -1292,54 +1292,54 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             }
             if(programId==5 || programId==6 || programId==10 || programId==11){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" ";
-                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" ";
+                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
-                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
+                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
             }
             if(programId==2 || programId==3 || programId==4){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                 }
             }
             if(programId==5 || programId==6){
                 if(!ogceCompleted.equals("Select")){
                     if(ogceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(ogceCompleted.equals("Yes")){
-                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" ";
-                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+" ";
+                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" ";
+                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+" ";
                     }
                     if(ogceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+" ";
+                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+" ";
                     }
                 }
                 if(!vivaVoceCompleted.equals("Select")){
                     if(vivaVoceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(vivaVoceCompleted.equals("Yes")){
-                      sql=sql + "and s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" ";
+                      sql=sql + "and s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" ";
                     }
                     if(vivaVoceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + "and s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -1349,26 +1349,26 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     else if(extensionFor.equals("2"))approvalTypeId=3;
                     else if(extensionFor.equals("3"))approvalTypeId=4;
                        sql=sql+" and s.personalId=ex.personalId  and s.academicYear='"+academicYear+"' and ex.year='"+extensionFor+"' ";
-                sql=sql+"  and s.programId="+programId +" ";
-                    //  sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programId="+programId +" ";
+                sql=sql+"  and s.programid_programid="+programId +" ";
+                    //  sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programid_programid="+programId +" ";
                   //  sql=sql+" and app1.approvalTypeId=app.approvalTypeId ";
                
                     //sql=sql+" and s.personalId=ex.personalId and s.personalId=app.personalId and s.academicYear='"+academicYear+"' ";
-                  //  sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programId="+programId +" ";
+                  //  sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programid_programid="+programId +" ";
                   //  sql=sql+" and app1.approvalTypeId=app.approvalTypeId ";
                 }
             }
             if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
                 if(!thesisSubmitted.equals("Select")){
                     if(thesisSubmitted.equals("All")){
-                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     else if(thesisSubmitted.equals("Yes")){
-                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" ";
+                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" ";
                     }
                     else if(thesisSubmitted.equals("No")){
-                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -1377,7 +1377,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                    sql=sql + "and ((s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"')) or ";
 //                    sql=sql+"(s.personalId not in (select personalId from PhdDetails) and s.academicYear="+academicYear+")) ";
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
                  if(courseCompleted.equals("Yes")){
@@ -1392,7 +1392,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                       }
                     if(programId>0)
                     {
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                      }
                     }
                  else if(completeType.equals("Certificate Issued")){
@@ -1403,7 +1403,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                       sql=sql+"and s.academicYear='"+academicYear+"'";
                   }
                   if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                    }
                }
                     
@@ -1413,7 +1413,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                     
@@ -1424,7 +1424,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //               else if(courseCompleted.equals("PDC Issued")){
@@ -1433,7 +1433,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
                 else if(courseCompleted.equals("No")){
@@ -1451,7 +1451,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     } 
                
                     
@@ -1468,7 +1468,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //                
@@ -1479,7 +1479,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -1490,7 +1490,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -1501,7 +1501,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -1515,7 +1515,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                       
                   }
@@ -1528,7 +1528,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                       
                   }
@@ -1541,19 +1541,19 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     sql=sql + " and (s.personalId in (select personalId from PhdDetailsmaster  where s.academicYear='"+academicYear+"' or comDate is null) or ";
                     sql=sql+"(s.personalId in (select personalId from PhdDetails) and s.academicYear="+academicYear+" and)) ";
                     if(programId>0){
-                        sql=sql+"and s.programId="+programId+" ";
+                        sql=sql+"and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("Yes")){
                     sql=sql + " and s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"' and p.printChk='Yes') ";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("No")){
                     sql=sql + " and s.personalId in (select personalId from PhdDetailsmaster  where printChk='No') and s.academicYear="+academicYear+"";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
             }
@@ -1616,14 +1616,14 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else if(year!=null && (programId==5 || programId==6 || programId==10 || programId==11)){
                 sql=sql+",Case when (select count(*) from AnnualReview where personalId=s.personalId and year="+year+"  ";
                if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -1633,7 +1633,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -1643,7 +1643,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+" and submissionType='6')>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+" and submissionType='6')>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -1665,7 +1665,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                 if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -1676,7 +1676,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
                 if(programId>0){
-                    sql=sql+"and s.programId="+programId+" ";
+                    sql=sql+"and s.programid_programid="+programId+" ";
                 }
                 sql=sql + ")>0 then 'Yes' else 'No' End";
             }
@@ -1689,7 +1689,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
                 if(programId>0){
-                    sql=sql+"and s.programId="+programId+" ";
+                    sql=sql+"and s.programid_programid="+programId+" ";
                 }
                 sql=sql + ")>0 then 'Yes' else 'No' End";
             }
@@ -1707,7 +1707,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                // sql=sql+",Extension ex,ApprovalProcess app,ApprovalType app1 ";
                 sql=sql+",Extension ex ";
             }
-            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and u.userId=s.userId  ";
             if(university>0){
                 sql=sql+"and s.personalId=sq.personalId  ";
@@ -1746,53 +1746,53 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             }
             if(programId==5 || programId==6 || programId==10 || programId==11){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" ";
-                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" ";
+                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
-                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
+                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
             }
             if(programId==2 || programId==3 || programId==4){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                 }
             }
             if(programId==5 || programId==6){
                 if(!ogceCompleted.equals("Select")){
                     if(ogceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(ogceCompleted.equals("Yes")){
-                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" ";
-                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+" ";
+                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" ";
+                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+" ";
                     }
                     if(ogceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+" ";
+                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+" ";
                     }
                 }
                 if(!vivaVoceCompleted.equals("Select")){
                     if(vivaVoceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(vivaVoceCompleted.equals("Yes")){
-                        sql=sql + "and s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" ";                    }
+                        sql=sql + "and s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" ";                    }
                     if(vivaVoceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + "and s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -1802,23 +1802,23 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     else if(extensionFor.equals("2"))approvalTypeId=3;
                     else if(extensionFor.equals("3"))approvalTypeId=4;
                     sql=sql+" and s.personalId=ex.personalId and s.academicYear='"+academicYear+"' and ex.year='"+extensionFor+"' ";
-                    sql=sql+"  and s.programId="+programId +" ";
+                    sql=sql+"  and s.programid_programid="+programId +" ";
                   //  sql=sql+" and s.personalId=ex.personalId and s.personalId=app.personalId and s.academicYear='"+academicYear+"' ";
-                    //sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programId="+programId +" ";
+                    //sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programid_programid="+programId +" ";
                     //sql=sql+" and app1.approvalTypeId=app.approvalTypeId ";
                 }
             }
             if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
                 if(!thesisSubmitted.equals("Select")){
                     if(thesisSubmitted.equals("All")){
-                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     else if(thesisSubmitted.equals("Yes")){
-                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" ";
+                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" ";
                     }
                     else if(thesisSubmitted.equals("No")){
-                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -1827,7 +1827,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                    sql=sql + "and ((s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"')) or ";
 //                    sql=sql+"(s.personalId not in (select personalId from PhdDetails) and s.academicYear="+academicYear+")) ";
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
                  if(courseCompleted.equals("Yes")){
@@ -1842,7 +1842,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                       }
                     if(programId>0)
                     {
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                      }
                     }
                  else if(completeType.equals("Certificate Issued")){
@@ -1853,7 +1853,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                       sql=sql+"and s.academicYear='"+academicYear+"'";
                   }
                   if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                    }
                }
                     
@@ -1863,7 +1863,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                     
@@ -1874,7 +1874,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //               else if(courseCompleted.equals("PDC Issued")){
@@ -1883,7 +1883,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
                 else if(courseCompleted.equals("No")){
@@ -1900,7 +1900,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     } 
                     
                     
@@ -1916,7 +1916,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //                
@@ -1927,7 +1927,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -1938,7 +1938,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -1949,7 +1949,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -1963,7 +1963,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                       
                   }
@@ -1976,7 +1976,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                       
                   }
@@ -1989,19 +1989,19 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     sql=sql + " and (s.personalId in (select personalId from PhdDetailsmaster  where s.academicYear='"+academicYear+"' or comDate is null) or ";
                     sql=sql+"(s.personalId in (select personalId from PhdDetails) and s.academicYear="+academicYear+" and)) ";
                     if(programId>0){
-                        sql=sql+"and s.programId="+programId+" ";
+                        sql=sql+"and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("Yes")){
                     sql=sql + " and s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"' and p.printChk='Yes') ";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("No")){
                     sql=sql + " and s.personalId in (select personalId from PhdDetailsmaster  where printChk='No') and s.academicYear="+academicYear+"";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
             }
@@ -2065,14 +2065,14 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else if(year!=null && (programId==5 || programId==6 || programId==10 || programId==11)){
                 sql=sql+",Case when (select count(*) from AnnualReview where personalId=s.personalId and year="+year+"  ";
                 if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -2082,7 +2082,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -2092,7 +2092,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-               sql=sql+"and s.programId="+programId+" and submissionType='6')>0 then 'Yes' else 'No' End";
+               sql=sql+"and s.programid_programid="+programId+" and submissionType='6')>0 then 'Yes' else 'No' End";
            }
             else{
                 sql=sql+",'--'";
@@ -2114,7 +2114,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                if(academicYear!=""){
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -2126,7 +2126,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
                 if(programId>0){
-                    sql=sql+"and s.programId="+programId+" ";
+                    sql=sql+"and s.programid_programid="+programId+" ";
                 }
                 sql=sql + ")>0 then 'Yes' else 'No' End";
             }
@@ -2139,7 +2139,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                   sql=sql+"  and s.academicYear='"+academicYear+"' ";
                 }
                 if(programId>0){
-                    sql=sql+"and s.programId="+programId+" ";
+                    sql=sql+"and s.programid_programid="+programId+" ";
                 }
                 sql=sql + ")>0 then 'Yes' else 'No' End";
             }
@@ -2157,7 +2157,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             if(university>0){
                 sql=sql+",StudentQualification sq ";
             }
-            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and u.userId=s.userId   ";
             if(university>0){
                 sql=sql+"and s.personalId=sq.personalId  ";
@@ -2196,54 +2196,54 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             }
             if(programId==5 || programId==6 || programId==10 || programId==11){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" ";
-                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" ";
+                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
-                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
+                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
             }
             if(programId==2 || programId==3 || programId==4){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                 }
             }
             if(programId==5 || programId==6){
                 if(!ogceCompleted.equals("Select")){
                     if(ogceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(ogceCompleted.equals("Yes")){
-                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" ";
-                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+" ";
+                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" ";
+                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+" ";
                     }
                     if(ogceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+" ";
+                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+" ";
                     }
                 }
                 if(!vivaVoceCompleted.equals("Select")){
                     if(vivaVoceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(vivaVoceCompleted.equals("Yes")){
-                        sql=sql + "and s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" ";
+                        sql=sql + "and s.personalId in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" ";
                     }
                     if(vivaVoceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + "and s.personalId not in (select distinct sub.personalId from Submission sub where s.academicYear='"+academicYear+"' and sub.submissionType='6') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -2253,22 +2253,22 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     else if(extensionFor.equals("2"))approvalTypeId=3;
                     else if(extensionFor.equals("3"))approvalTypeId=4;
                     sql=sql+" and s.personalId=ex.personalId  and s.academicYear='"+academicYear+"' and ex.year='"+extensionFor+"' ";
-                sql=sql+"  and s.programId="+programId +" ";
-                    //  sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programId="+programId +" ";
+                sql=sql+"  and s.programid_programid="+programId +" ";
+                    //  sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programid_programid="+programId +" ";
                   //  sql=sql+" and app1.approvalTypeId=app.approvalTypeId ";
                 }
             }
             if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
                 if(!thesisSubmitted.equals("Select")){
                     if(thesisSubmitted.equals("All")){
-                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     else if(thesisSubmitted.equals("Yes")){
-                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" ";
+                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" ";
                     }
                     else if(thesisSubmitted.equals("No")){
-                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -2277,7 +2277,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                    sql=sql + "and ((s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"')) or ";
 //                    sql=sql+"(s.personalId not in (select personalId from PhdDetails) and s.academicYear="+academicYear+")) ";
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
                  if(courseCompleted.equals("Yes")){
@@ -2292,7 +2292,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                       }
                     if(programId>0)
                     {
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                      }
                     }
                  else if(completeType.equals("Certificate Issued")){
@@ -2303,7 +2303,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                       sql=sql+"and s.academicYear='"+academicYear+"'";
                   }
                   if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                    }
                }
                     
@@ -2313,7 +2313,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                     
@@ -2324,7 +2324,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //               else if(courseCompleted.equals("PDC Issued")){
@@ -2333,7 +2333,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
                 else if(courseCompleted.equals("No")){
@@ -2353,7 +2353,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     } 
                
                     
@@ -2370,7 +2370,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //                
@@ -2381,7 +2381,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -2392,7 +2392,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -2403,7 +2403,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                   sql=sql+"and s.academicYear='"+academicYear+"'";
 //                    }
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                      
 //                  }
@@ -2417,7 +2417,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                       
                   }
@@ -2430,7 +2430,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                       
                   }
@@ -2446,19 +2446,19 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     sql=sql + " and (s.personalId in (select personalId from PhdDetailsmaster  where s.academicYear='"+academicYear+"' or comDate is null) or ";
                     sql=sql+"(s.personalId in (select personalId from PhdDetails) and s.academicYear="+academicYear+" and)) ";
                     if(programId>0){
-                        sql=sql+"and s.programId="+programId+" ";
+                        sql=sql+"and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("Yes")){
                     sql=sql + " and s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"' and p.printChk='Yes') ";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("No")){
                     sql=sql + " and s.personalId in (select personalId from PhdDetailsmaster  where printChk='No') and s.academicYear="+academicYear+"";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
             }
@@ -2514,25 +2514,25 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,d1.disabilityId,d1.disability,s.gender,s.academicYear";
             if(year!=null && (programId==2 ||programId==3 || programId==4)){
                 sql=sql+",Case when (select count(*) from MidTermReview where personalId=s.personalId and semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else if(year!=null && (programId==5 || programId==6 || programId==10 || programId==11)){
                 sql=sql+",Case when (select count(*) from AnnualReview where personalId=s.personalId and year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
             }
             if(programId==5 || programId==6){
                 sql=sql+",Case when (select count(*) from VivaVoceReport where personalId=s.personalId and Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
             }
             if(programId==5 || programId==6){
                 sql=sql+",Case when (select count(*) from VivaVoceReport where personalId=s.personalId and Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+" and examType='vivavoce')>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+" and examType='vivavoce')>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -2550,7 +2550,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             }
             if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
                 sql=sql+",Case when (select count(*) from Submission where personalId=s.personalId and submissionType=3 and Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' ";
-                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
             }
             else{
                 sql=sql+",'--'";
@@ -2558,7 +2558,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             if(!courseCompleted.equals("Select")){
                 sql=sql+",Case when (select count(*) from PhdDetailsmaster  where personalId=s.personalId and acaProgram='Yes' and Year(DATE_FORMAT(certiDate,'%Y-%m-%d'))='"+academicYear+"' ";
                 if(programId>0){
-                    sql=sql+"and s.programId="+programId+" ";
+                    sql=sql+"and s.programid_programid="+programId+" ";
                 }
                 sql=sql + ")>0 then 'Yes' else 'No' End";
             }
@@ -2568,7 +2568,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             if(!certificateIssued.equals("Select")){
                 sql=sql+",Case when (select count(*) from PhdDetailsmaster  where personalId=s.personalId and printChk='Yes' and Year(DATE_FORMAT(comDate,'%Y-%m-%d'))='"+academicYear+"' ";
                 if(programId>0){
-                    sql=sql+"and s.programId="+programId+" ";
+                    sql=sql+"and s.programid_programid="+programId+" ";
                 }
                 sql=sql + ")>0 then 'Yes' else 'No' End";
             }
@@ -2582,7 +2582,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             if(!extensionFor.equals("0")){
                 sql=sql+",Extension ex,ApprovalProcess app,ApprovalType app1 ";
             }
-            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and u.userId=s.userId  and s.personalId=sq.personalId ";
             if(ciId>0){
                 sql=sql + " and c.ciId="+ciId+" ";
@@ -2618,54 +2618,54 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             }
             if(programId==5 || programId==6 || programId==10 || programId==11){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" ";
-                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" ";
+                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
-                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId not in (select  a.personalId from AnnualReview a where a.year="+year+" and s.academicYear='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
+                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
                 }
             }
             if(programId==2 || programId==3 || programId==4){
                 if(!year.equals("0") && reportSubmitted.equals("All")){
-                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+") or ";
-                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+")) ";
+                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+") or ";
+                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+")) ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+" ";
+                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+" ";
                 }
                 else if(!year.equals("0") && reportSubmitted.equals("No")){
-                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                 }
             }
             if(programId==5 || programId==6){
                 if(!ogceCompleted.equals("Select")){
                     if(ogceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(ogceCompleted.equals("Yes")){
-                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" ";
-                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+" ";
+                        sql=sql + "and  s.personalId in (select distinct  v.personalId from VivaVoceReport v  where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" ";
+                      //  sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+" ";
                     }
                     if(ogceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programId="+programId+" and s.academicYear="+academicYear+" ";
+                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='ogce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+" ";
                     }
                 }
                 if(!vivaVoceCompleted.equals("Select")){
                     if(vivaVoceCompleted.equals("All")){
-                        sql=sql + "and ((s.personalId in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + "and ((s.personalId in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     if(vivaVoceCompleted.equals("Yes")){
-                        sql=sql + "and s.personalId in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programId="+programId+" ";
+                        sql=sql + "and s.personalId in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programid_programid="+programId+" ";
                     }
                     if(vivaVoceCompleted.equals("No")){
-                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + "and s.personalId not in (select distinct v.personalId from VivaVoceReport v where s.academicYear='"+academicYear+"' and v.examType='vivavoce') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -2675,21 +2675,21 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     else if(extensionFor.equals("2"))approvalTypeId=3;
                     else if(extensionFor.equals("3"))approvalTypeId=4;
                     sql=sql+" and s.personalId=ex.personalId and s.personalId=app.personalId and s.academicYear='"+academicYear+"' ";
-                    sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programId="+programId +" ";
+                    sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programid_programid="+programId +" ";
                     sql=sql+" and app1.approvalTypeId=app.approvalTypeId ";
                 }
             }
             if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
                 if(!thesisSubmitted.equals("Select")){
                     if(thesisSubmitted.equals("All")){
-                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+") or ";
-                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programId="+programId+" and s.academicYear="+academicYear+")) ";
+                        sql=sql + " and ((s.personalId in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+") or ";
+                        sql=sql+"(s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3)and s.programid_programid="+programId+" and s.academicYear="+academicYear+")) ";
                     }
                     else if(thesisSubmitted.equals("Yes")){
-                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" ";
+                        sql=sql + " and s.personalId in (select distinct sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" ";
                     }
                     else if(thesisSubmitted.equals("No")){
-                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programId="+programId+" and s.academicYear="+academicYear+"";
+                        sql=sql + " and s.personalId not in (select sb.personalId from Submission sb where s.academicYear='"+academicYear+"' and sb.submissionType=3) and s.programid_programid="+programId+" and s.academicYear="+academicYear+"";
                     }
                 }
             }
@@ -2698,7 +2698,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     sql=sql + "and ((s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"')) or ";
                     sql=sql+"(s.personalId not in (select personalId from PhdDetails) and s.academicYear="+academicYear+")) ";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(courseCompleted.equals("Yes")){
@@ -2707,7 +2707,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(courseCompleted.equals("No")){
@@ -2720,7 +2720,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 
@@ -2731,7 +2731,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                       
                   }
@@ -2742,7 +2742,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                    sql=sql+"and s.academicYear='"+academicYear+"'";
                     }
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                       
                   }
@@ -2753,19 +2753,19 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
                     sql=sql + " and (s.personalId in (select personalId from PhdDetailsmaster  where s.academicYear='"+academicYear+"' or comDate is null) or ";
                     sql=sql+"(s.personalId in (select personalId from PhdDetails) and s.academicYear="+academicYear+" and)) ";
                     if(programId>0){
-                        sql=sql+"and s.programId="+programId+" ";
+                        sql=sql+"and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("Yes")){
                     sql=sql + " and s.personalId in (select p.personalId from PhdDetailsmaster  p where s.academicYear='"+academicYear+"' and p.printChk='Yes') ";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
                 else if(certificateIssued.equals("No")){
                     sql=sql + " and s.personalId in (select personalId from PhdDetailsmaster  where printChk='No') and s.academicYear="+academicYear+"";
                     if(programId>0){
-                        sql=sql+" and s.programId="+programId+" ";
+                        sql=sql+" and s.programid_programid="+programId+" ";
                     }
                 }
             }
@@ -2795,25 +2795,25 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,d1.disabilityId,d1.disability,s.gender,s.academicYear";
 //            if(year!=null && (programId==2 ||programId==3 || programId==4)){
 //                sql=sql+",Case when (select count(*) from MidTermReview where personalId=s.personalId and semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
 //            }
 //            else if(year!=null && (programId==5 || programId==6 || programId==10 || programId==11)){
 //                sql=sql+",Case when (select count(*) from AnnualReview where personalId=s.personalId and year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
 //            }
 //            else{
 //                sql=sql+",'--'";
 //            }
 //            if(programId==5 || programId==6){
 //                sql=sql+",Case when (select count(*) from VivaVoceReport where personalId=s.personalId and Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+" and examType='ogce')>0 then 'Yes' else 'No' End";
 //            }
 //            else{
 //                sql=sql+",'--'";
 //            }
 //            if(programId==5 || programId==6){
 //                sql=sql+",Case when (select count(*) from VivaVoceReport where personalId=s.personalId and Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+" and examType='vivavoce')>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+" and examType='vivavoce')>0 then 'Yes' else 'No' End";
 //            }
 //            else{
 //                sql=sql+",'--'";
@@ -2831,7 +2831,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            }
 //            if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
 //                sql=sql+",Case when (select count(*) from Submission where personalId=s.personalId and submissionType=3 and Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                sql=sql+"and s.programId="+programId+")>0 then 'Yes' else 'No' End";
+//                sql=sql+"and s.programid_programid="+programId+")>0 then 'Yes' else 'No' End";
 //            }
 //            else{
 //                sql=sql+",'--'";
@@ -2839,7 +2839,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            if(!courseCompleted.equals("Select")){
 //                sql=sql+",Case when (select count(*) from PhdDetailsmaster  where personalId=s.personalId and acaProgram='Yes' and Year(DATE_FORMAT(certiDate,'%Y-%m-%d'))='"+academicYear+"' ";
 //                if(programId>0){
-//                    sql=sql+"and s.programId="+programId+" ";
+//                    sql=sql+"and s.programid_programid="+programId+" ";
 //                }
 //                sql=sql + ")>0 then 'Yes' else 'No' End";
 //            }
@@ -2849,7 +2849,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            if(!certificateIssued.equals("Select")){
 //                sql=sql+",Case when (select count(*) from PhdDetailsmaster  where personalId=s.personalId and printChk='Yes' and Year(DATE_FORMAT(comDate,'%Y-%m-%d'))='"+academicYear+"' ";
 //                if(programId>0){
-//                    sql=sql+"and s.programId="+programId+" ";
+//                    sql=sql+"and s.programid_programid="+programId+" ";
 //                }
 //                sql=sql + ")>0 then 'Yes' else 'No' End";
 //            }
@@ -2863,7 +2863,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            if(!extensionFor.equals("0")){
 //                sql=sql+",Extension ex,ApprovalProcess app,ApprovalType app1 ";
 //            }
-//            sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+//            sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
 //            sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged ";
 //            if(ciId>0){
 //                sql=sql + " and c.ciId="+ciId+" ";
@@ -2899,53 +2899,53 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //            }
 //            if(programId==5 || programId==6 || programId==10 || programId==11){
 //                if(!year.equals("0") && reportSubmitted.equals("All")){
-//                    sql=sql + "and ((s.personalId in (select personalId from AnnualReview where year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+") or ";
-//                    sql=sql + "(s.personalId not in (select personalId from AnnualReview where year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+" and s.status='Active')) ";
+//                    sql=sql + "and ((s.personalId in (select personalId from AnnualReview where year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+") or ";
+//                    sql=sql + "(s.personalId not in (select personalId from AnnualReview where year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+" and s.status='Active')) ";
 //                }
 //                else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-//                    sql=sql + "and s.personalId in (select personalId from AnnualReview where year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+" ";
-//                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+//                    sql=sql + "and s.personalId in (select personalId from AnnualReview where year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+" ";
+//                    //sql=sql+"and s.personalId=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
 //                }
 //                else if(!year.equals("0") && reportSubmitted.equals("No")){
-//                    sql=sql + "and s.personalId not in (select personalId from AnnualReview where year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+" and s.status='Active' ";
-//                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programId="+programId+" ";
+//                    sql=sql + "and s.personalId not in (select personalId from AnnualReview where year="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+" and s.status='Active' ";
+//                    //sql=sql+"and s.personalId!=ar.personalId and ar.year="+year+" and Year(DATE_FORMAT(ar.aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"' and s.programid_programid="+programId+" ";
 //                }
 //            }
 //            if(programId==2 || programId==3 || programId==4){
 //                if(!year.equals("0") && reportSubmitted.equals("All")){
-//                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+") or ";
-//                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+"  and s.academicYear="+academicYear+" and s.status='Active')) ";
+//                    sql=sql + "and ((s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+") or ";
+//                    sql=sql + "(s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+"  and s.academicYear="+academicYear+" and s.status='Active')) ";
 //                }
 //                else if(!year.equals("0") && reportSubmitted.equals("Yes")){
-//                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+" ";
+//                    sql=sql + "and s.personalId in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+" ";
 //                }
 //                else if(!year.equals("0") && reportSubmitted.equals("No")){
-//                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programId="+programId+" and s.academicYear="+academicYear+"  and s.status='Active'";
+//                    sql=sql + "and s.personalId not in (select personalId from MidTermReview where semister="+year+" and Year(DATE_FORMAT(aprReceiptDate,'%Y-%m-%d'))='"+academicYear+"') and s.programid_programid="+programId+" and s.academicYear="+academicYear+"  and s.status='Active'";
 //                }
 //            }
 //            if(programId==5 || programId==6){
 //                if(!ogceCompleted.equals("Select")){
 //                    if(ogceCompleted.equals("All")){
-//                        sql=sql + "and ((s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+") or ";
-//                        sql=sql+"(s.personalId not in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+" and s.academicYear<="+academicYear+" and s.status='Active')) ";
+//                        sql=sql + "and ((s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+") or ";
+//                        sql=sql+"(s.personalId not in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+" and s.academicYear<="+academicYear+" and s.status='Active')) ";
 //                    }
 //                    if(ogceCompleted.equals("Yes")){
-//                        sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+" ";
+//                        sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+" ";
 //                    }
 //                    if(ogceCompleted.equals("No")){
-//                        sql=sql + "and s.personalId not in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programId="+programId+" and s.academicYear<="+academicYear+" and s.status='Active' ";
+//                        sql=sql + "and s.personalId not in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='ogce') and s.programid_programid="+programId+" and s.academicYear<="+academicYear+" and s.status='Active' ";
 //                    }
 //                }
 //                if(!vivaVoceCompleted.equals("Select")){
 //                    if(vivaVoceCompleted.equals("All")){
-//                        sql=sql + "and ((s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='vivavoce') and s.programId="+programId+") or ";
-//                        sql=sql+"(s.personalId not in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='vivavoce') and s.programId="+programId+" and s.academicYear<="+academicYear+" and s.status='Active')) ";
+//                        sql=sql + "and ((s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='vivavoce') and s.programid_programid="+programId+") or ";
+//                        sql=sql+"(s.personalId not in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='vivavoce') and s.programid_programid="+programId+" and s.academicYear<="+academicYear+" and s.status='Active')) ";
 //                    }
 //                    if(vivaVoceCompleted.equals("Yes")){
-//                        sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='vivavoce') and s.programId="+programId+" ";
+//                        sql=sql + "and s.personalId in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='vivavoce') and s.programid_programid="+programId+" ";
 //                    }
 //                    if(vivaVoceCompleted.equals("No")){
-//                        sql=sql + "and s.personalId not in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='vivavoce') and s.programId="+programId+" and s.academicYear<="+academicYear+" and s.status='Active' ";
+//                        sql=sql + "and s.personalId not in (select distinct personalId from VivaVoceReport where Year(DATE_FORMAT(vivaDate,'%Y-%m-%d'))='"+academicYear+"' and examType='vivavoce') and s.programid_programid="+programId+" and s.academicYear<="+academicYear+" and s.status='Active' ";
 //                    }
 //                }
 //            }
@@ -2955,21 +2955,21 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                    else if(extensionFor.equals("2"))approvalTypeId=3;
 //                    else if(extensionFor.equals("3"))approvalTypeId=4;
 //                    sql=sql+" and s.personalId=ex.personalId and s.personalId=app.personalId and Year(DATE_FORMAT(ex.fromDate,'%Y-%m-%d'))='"+academicYear+"' ";
-//                    sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programId="+programId +" ";
+//                    sql=sql+" and app.approvalTypeId="+approvalTypeId+" and s.programid_programid="+programId +" ";
 //                    sql=sql+" and app1.approvalTypeId=app.approvalTypeId ";
 //                }
 //            }
 //            if(programId==2 ||programId==3 || programId==4 || programId==5 || programId==6 || programId==16){
 //                if(!thesisSubmitted.equals("Select")){
 //                    if(thesisSubmitted.equals("All")){
-//                        sql=sql + " and ((s.personalId in (select personalId from Submission where Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' and submissionType=3) and s.programId="+programId+") or ";
-//                        sql=sql+"(s.personalId not in (select personalId from Submission where Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' and submissionType=3)and s.programId="+programId+" and s.academicYear<="+academicYear+") and s.status='Active') ";
+//                        sql=sql + " and ((s.personalId in (select personalId from Submission where Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' and submissionType=3) and s.programid_programid="+programId+") or ";
+//                        sql=sql+"(s.personalId not in (select personalId from Submission where Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' and submissionType=3)and s.programid_programid="+programId+" and s.academicYear<="+academicYear+") and s.status='Active') ";
 //                    }
 //                    else if(thesisSubmitted.equals("Yes")){
-//                        sql=sql + " and s.personalId in (select personalId from Submission where Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' and submissionType=3) and s.programId="+programId+" ";
+//                        sql=sql + " and s.personalId in (select personalId from Submission where Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' and submissionType=3) and s.programid_programid="+programId+" ";
 //                    }
 //                    else if(thesisSubmitted.equals("No")){
-//                        sql=sql + " and s.personalId not in (select personalId from Submission where Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' and submissionType=3) and s.programId="+programId+" and s.academicYear<="+academicYear+" and s.status='Active' ";
+//                        sql=sql + " and s.personalId not in (select personalId from Submission where Year(DATE_FORMAT(submissionDate,'%Y-%m-%d'))='"+academicYear+"' and submissionType=3) and s.programid_programid="+programId+" and s.academicYear<="+academicYear+" and s.status='Active' ";
 //                    }
 //                }
 //            }
@@ -2978,13 +2978,13 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                    sql=sql + "and (s.personalId in (select personalId from PhdDetailsmaster  where Year(DATE_FORMAT(certiDate,'%Y-%m-%d'))='"+academicYear+"' or certiDate is null)) or ";
 //                    sql=sql+"(s.personalId not in (select personalId from PhdDetails) and s.academicYear<="+academicYear+" and s.status='Active') ";
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //                else if(courseCompleted.equals("Yes")){
 //                    sql=sql + "and s.personalId in (select personalId from PhdDetailsmaster  where Year(DATE_FORMAT(certiDate,'%Y-%m-%d'))='"+academicYear+"' and acaProgram='Yes')";
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //                else if(courseCompleted.equals("No")){
@@ -2992,7 +2992,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                    sql=sql + "and (s.personalId in (select personalId from PhdDetailsmaster  where certiDate is null) or ";
 //                    sql=sql+"(s.personalId not in (select personalId from PhdDetails) and s.academicYear<="+academicYear+" and s.status='Active')) ";
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //            }
@@ -3001,19 +3001,19 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
 //                    sql=sql + " and (s.personalId in (select personalId from PhdDetailsmaster  where Year(DATE_FORMAT(comDate,'%Y-%m-%d'))='"+academicYear+"' or comDate is null) or ";
 //                    sql=sql+"(s.personalId in (select personalId from PhdDetails) and s.academicYear<="+academicYear+" and s.status='Active')) ";
 //                    if(programId>0){
-//                        sql=sql+"and s.programId="+programId+" ";
+//                        sql=sql+"and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //                else if(certificateIssued.equals("Yes")){
 //                    sql=sql + " and s.personalId in (select personalId from PhdDetailsmaster  where Year(DATE_FORMAT(comDate,'%Y-%m-%d'))='"+academicYear+"' and printChk='Yes') ";
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //                else if(certificateIssued.equals("No")){
 //                    sql=sql + " and s.personalId in (select personalId from PhdDetailsmaster  where printChk='No') and s.academicYear<="+academicYear+" and s.status='Active' ";                    
 //                    if(programId>0){
-//                        sql=sql+" and s.programId="+programId+" ";
+//                        sql=sql+" and s.programid_programid="+programId+" ";
 //                    }
 //                }
 //            }
@@ -3061,7 +3061,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             sql="select s.personalId,coalesce(s.enrolNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,";
             sql=sql+"p.programId,p.programName,s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,";
             sql=sql+"d1.disability,s.gender,s.academicYear from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1, ";
-            sql=sql+"FacultyStudent g,facultymaster f where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+"FacultyStudent g,facultymaster f where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyId=g.facultyId and s.personalId=g.personalId and g.facultyId="+facultyId+" ";
             if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3082,7 +3082,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,p.programId,p.programName,";
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
             sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,facultymaster f ";
-            sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.cname and s.personalId=g.personalId  ";
             /*if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3224,7 +3224,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{            
             String sql="select s.fullName,s.enrolmentNo,p.programId,p.programName,c.ciId,c.ciName,d.disciplineId,d.disciplineName ";
             sql=sql+"from StudentDetails s,FacultyStudent f,cimaster  c,disciplinemaster d,programmaster p ";
-            sql=sql+"where s.personalId=f.personalId and c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and f.facultyId="+facultyId.getFacultyId()+" ";            
+            sql=sql+"where s.personalId=f.personalId and c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and f.facultyId="+facultyId.getFacultyId()+" ";            
             sql=sql+"order by s.fullName";        
             studentList=getHibernateTemplate().find(sql);                                    
             
@@ -3240,7 +3240,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
             String sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from ";
             sql=sql+"FacultyStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,facultymaster f where f.facultyId=a.facultyId.facultyId ";
-            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId ";
+            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId_ciId and d.disciplineId=s.disId_disciplineId and p.programId=s.programid_programid ";
             sql=sql+" and a.facultyId="+facultyId.getFacultyId()+" order by s.fullName";
             studentList=getHibernateTemplate().find(sql);
             if(studentList.size()>0){
@@ -3282,7 +3282,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             String sql="select s.personalId,coalesce(s.enrolNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,p.programId,p.programName,";
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
             sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,GuideStudent g,facultymaster f ";
-            sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.guideName and s.personalId=g.personalId and f.facultyId="+guideId+" ";
             /*if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3321,7 +3321,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
             sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,facultymaster f ";
             
-            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.cname and s.personalId=g.personalId  ";
             /*if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3380,7 +3380,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
             sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,facultymaster f ";
             
-            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.cname and s.personalId=g.personalId  ";
             /*if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3436,7 +3436,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
             sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,facultymaster f ";
             
-            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.cname and s.personalId=g.personalId  ";
             /*if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3489,7 +3489,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             String sql="select s.personalId,coalesce(s.enrolNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,";
             sql=sql+"p.programId,p.programName,s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,";
             sql=sql+"d1.disability,s.gender,s.academicYear,s.status from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1, ";
-            sql=sql+"FacultyStudent g,facultymaster f where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+"FacultyStudent g,facultymaster f where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyId=g.facultyId and s.personalId=g.personalId and g.facultyId="+facultyId+" ";
             /*if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3800,14 +3800,14 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
             String sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName  ";
             if(!studentStatus.equals("Select") && studentStatus.equals("Completed")){
-                sql=sql+",pd.acaprogrammaster ";
+                sql=sql+",pd.acaprogram ";
             }
             sql=sql+"from GuideStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,facultymaster f ";
             if(!studentStatus.equals("Select")&& studentStatus.equals("Completed")){
                 sql=sql+ ",PhdDetailsmaster pd ";
             }
             sql=sql+ "where f.facultyName=a.guideName ";
-            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId and a.guideName='"+faculty.getFacultyName()+"' ";
+            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId_ciId and d.disciplineId=s.disId_disciplineId and p.programId=s.programid_programid and a.guideName='"+faculty.getFacultyName()+"' ";
             if(studentStatus.equals("Persuing")){
                // sql=sql+"and s.personalId=pd.personalId and (pd.acaProgram='No' or pd.acaProgram='' or pd.acaProgram='Select')";
                 sql=sql+"and (s.personalId in(select personalId from PhdDetailsmaster where acaProgram='No' or acaProgram='' or acaProgram='Select')";
@@ -3866,7 +3866,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
                 String sql="";
                 sql="select count(*) from cimaster  c,disciplinemaster d,User u,programmaster p,";
-                sql=sql+"studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId  and  u.userId=s.userId ";
+                sql=sql+"studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid  and  u.userId=s.userId ";
                 if(ciId>0){
                     sql=sql + " and c.ciId="+ciId+" ";
                 }
@@ -3974,7 +3974,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
                 String sql="";
                  sql="select  count(*) from cimaster  c,disciplinemaster d,User u,programmaster p,";
-                sql=sql+"studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  u.userId=s.userId ";
+                sql=sql+"studentmaster s where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programid_programid and  u.userId=s.userId ";
                 if(ciId>0){
                     sql=sql + " and c.ciId="+ciId+" ";
                 }
