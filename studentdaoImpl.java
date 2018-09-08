@@ -468,11 +468,11 @@ public class studentDaoImpl extends HibernateDaoSupport implements studentDao {
         List facultyList=new ArrayList();
         logData.writeToLogFile(loggedInUser, "viewAllStudentsByName", "Inside viewAllStudentsByName","");
         try{
-            //String sql="from Faculty where facultyName like '"+facultyName+"%' order by facultyName";
-           // String sql="from Faculty order by facultyName";
+            //String sql="from facultymaster where facultyName like '"+facultyName+"%' order by facultyName";
+           // String sql="from facultymaster order by facultyName";
             //System.out.println("Sql is :"+sql);
            facultyList=getHibernateTemplate().find("from studentmaster where fullName like ? order by fullName","%"+studentName+"%");
-            //facultyList=getHibernateTemplate().find(" from Faculty order by facultyName");
+            //facultyList=getHibernateTemplate().find(" from facultymaster order by facultyName");
         }catch(Exception e){
             logData.writeToLogFile(loggedInUser, "viewAllStudentsByName", "Exception occured",e.getMessage());
         }
@@ -482,11 +482,11 @@ public class studentDaoImpl extends HibernateDaoSupport implements studentDao {
         List facultyList=new ArrayList();
         logData.writeToLogFile(loggedInUser, "viewAllEnrolmentNos", "Inside viewAllEnrolmentNos","");
         try{
-            //String sql="from Faculty where facultyName like '"+facultyName+"%' order by facultyName";
-           // String sql="from Faculty order by facultyName";
+            //String sql="from facultymaster where facultyName like '"+facultyName+"%' order by facultyName";
+           // String sql="from facultymaster order by facultyName";
             //System.out.println("Sql is :"+sql);
            facultyList=getHibernateTemplate().find("from studentmaster where enrolmentNo like ? order by enrolmentNo",enrolNo+"%");
-            //facultyList=getHibernateTemplate().find(" from Faculty order by facultyName");
+            //facultyList=getHibernateTemplate().find(" from facultymaster order by facultyName");
         }catch(Exception e){
             logData.writeToLogFile(loggedInUser, "viewAllEnrolmentNos", "Exception occured",e.getMessage());
         }
@@ -677,8 +677,8 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         StudentDetailsMapping studentdetailsmapping=null;
         try{
             String sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from ";
-            sql=sql+"FacultyStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,Faculty f where f.facultyId=a.facultyId.facultyId ";
-            sql=sql+"and s.personalId=a.personalId.personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId ";
+            sql=sql+"FacultyStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,facultymaster f where f.facultyId=a.facultyId.facultyId ";
+            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId ";
             sql=sql+" and a.facultyId="+facultyId.getFacultyId()+" order by s.fullName";
             studentList=getHibernateTemplate().find(sql);
             if(studentList.size()>0){
@@ -835,7 +835,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             String sql="select s.personalId,s.fullName,c.ciId,c.ciName,c.ciCode,s.academicYear,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName,p.programCode ";
             sql=sql+"from studentmaster s, ApprovalProcess ap,cimaster  c,disciplinemaster d,programmaster p ";
             sql= sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s.enrolmentNo=' ' and ";
-            sql=sql+"s.personalId=ap.personalId.personalId and";
+            sql=sql+"s.personalId=ap.personalId_personalId and";
             sql=sql+" ap.approvalTypeId.approvalTypeId=7  and approvalStatus='Approved' order by s.fullName";
             studentList=getHibernateTemplate().find(sql);  
             if(studentList.size()>0){
@@ -3061,7 +3061,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             sql="select s.personalId,coalesce(s.enrolNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,";
             sql=sql+"p.programId,p.programName,s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,";
             sql=sql+"d1.disability,s.gender,s.academicYear from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1, ";
-            sql=sql+"FacultyStudent g,Faculty f where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+"FacultyStudent g,facultymaster f where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyId=g.facultyId and s.personalId=g.personalId and g.facultyId="+facultyId+" ";
             if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3081,7 +3081,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
             sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,p.programId,p.programName,";
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
-            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,Faculty f ";
+            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,facultymaster f ";
             sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.cname and s.personalId=g.personalId  ";
             /*if(!academicYear.equals("")){
@@ -3239,8 +3239,8 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         StudentDetailsMapping studentdetailsmapping=null;
         try{
             String sql="select s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,c.ciNameCode,d.disciplineId,d.disciplineName,d.disciplineCode,p.programId,p.programName from ";
-            sql=sql+"FacultyStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,Faculty f where f.facultyId=a.facultyId.facultyId ";
-            sql=sql+"and s.personalId=a.personalId.personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId ";
+            sql=sql+"FacultyStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,facultymaster f where f.facultyId=a.facultyId.facultyId ";
+            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId ";
             sql=sql+" and a.facultyId="+facultyId.getFacultyId()+" order by s.fullName";
             studentList=getHibernateTemplate().find(sql);
             if(studentList.size()>0){
@@ -3281,7 +3281,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
             String sql="select s.personalId,coalesce(s.enrolNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,p.programId,p.programName,";
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
-            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,GuideStudent g,Faculty f ";
+            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,GuideStudent g,facultymaster f ";
             sql=sql+"where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.guideName and s.personalId=g.personalId and f.facultyId="+guideId+" ";
             /*if(!academicYear.equals("")){
@@ -3319,7 +3319,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
             String sql="select distinct  s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,p.programId,p.programName,";
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
-            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,Faculty f ";
+            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,facultymaster f ";
             
             sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.cname and s.personalId=g.personalId  ";
@@ -3378,7 +3378,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
         String sql="select distinct  s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,p.programId,p.programName,";
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
-            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,Faculty f ";
+            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,facultymaster f ";
             
             sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.cname and s.personalId=g.personalId  ";
@@ -3434,7 +3434,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
         try{
           String sql="select distinct  s.personalId,coalesce(s.enrolmentNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,p.programId,p.programName,";
             sql=sql+"s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,d1.disability,s.gender,s.academicYear,s.status";
-            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,Faculty f ";
+            sql=sql+" from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1,DoctoralCommittee g,facultymaster f ";
             
             sql=sql+" where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyName=g.cname and s.personalId=g.personalId  ";
@@ -3489,7 +3489,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             String sql="select s.personalId,coalesce(s.enrolNo,'--'),s.fullName ,c.ciId,c.ciName,d.disciplineId,d.disciplineName,";
             sql=sql+"p.programId,p.programName,s1.studentTypeId,s1.studentType,c1.categoryId,c1.categoryName,f.facultyId,f.facultyName,d1.disabilityId,";
             sql=sql+"d1.disability,s.gender,s.academicYear,s.status from cimaster  c,disciplinemaster d,programmaster p,studentmaster s,StudentType s1,Category c1,PhysicalDisability d1, ";
-            sql=sql+"FacultyStudent g,Faculty f where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
+            sql=sql+"FacultyStudent g,facultymaster f where c.ciId=s.ciId and d.disciplineId=s.disId and p.programId=s.programId and  s1.studentTypeId=s.studentTypeId and ";
             sql=sql+"c1.categoryId=s.categoryId and d1.disability=s.physicalChallanged and f.facultyId=g.facultyId and s.personalId=g.personalId and g.facultyId="+facultyId+" ";
             /*if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
@@ -3522,7 +3522,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
     public List viewStudentDetailsByFacultyMapping(int facultyId, String academicYear, String loggedInUser) {        
         List studentList=new ArrayList();   
         try{
-            String sql="select s.fullName as fullName,s.personalId as personalId from studentmaster s,Faculty f,FacultyStudent g where f.facultyId=g.facultyId and s.personalId=g.personalId and g.facultyId="+facultyId+" ";
+            String sql="select s.fullName as fullName,s.personalId as personalId from studentmaster s,facultymaster f,FacultyStudent g where f.facultyId=g.facultyId and s.personalId=g.personalId and g.facultyId="+facultyId+" ";
             if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
             }
@@ -3538,7 +3538,7 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
     public List viewStudentDetailsByGuideMapping(int guideId, String academicYear, String loggedInUser) {        
         List studentList=new ArrayList();
         try{            
-            String sql="select s.fullName from studentmaster s,Faculty f,GuideStudent g where f.facultyId=g.facultyId and s.personalId=g.personalId and g.facultyId="+guideId+" ";
+            String sql="select s.fullName from studentmaster s,facultymaster f,GuideStudent g where f.facultyId=g.facultyId and s.personalId=g.personalId and g.facultyId="+guideId+" ";
             if(!academicYear.equals("")){
                 sql=sql + "and s.academicYear='"+academicYear+ "' ";
             }
@@ -3802,16 +3802,16 @@ public List viewStudentDetailsByUser(User userId, String loggedInUser) {
             if(!studentStatus.equals("Select") && studentStatus.equals("Completed")){
                 sql=sql+",pd.acaprogrammaster ";
             }
-            sql=sql+"from GuideStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,Faculty f ";
+            sql=sql+"from GuideStudent a,cimaster  c,disciplinemaster d,programmaster p,studentmaster s,facultymaster f ";
             if(!studentStatus.equals("Select")&& studentStatus.equals("Completed")){
                 sql=sql+ ",PhdDetailsmaster pd ";
             }
             sql=sql+ "where f.facultyName=a.guideName ";
-            sql=sql+"and s.personalId=a.personalId.personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId and a.guideName='"+faculty.getFacultyName()+"' ";
+            sql=sql+"and s.personalId=a.personalId_personalId and c.ciId=s.ciId.ciId and d.disciplineId=s.disId.disciplineId and p.programId=s.programId and a.guideName='"+faculty.getFacultyName()+"' ";
             if(studentStatus.equals("Persuing")){
                // sql=sql+"and s.personalId=pd.personalId and (pd.acaProgram='No' or pd.acaProgram='' or pd.acaProgram='Select')";
                 sql=sql+"and (s.personalId in(select personalId from PhdDetailsmaster where acaProgram='No' or acaProgram='' or acaProgram='Select')";
-                sql=sql+"or s.personalId in(select a1.personalId.personalId from GuideStudent a1 where a1.personalId.personalId not in";
+                sql=sql+"or s.personalId in(select a1.personalId_personalId from GuideStudent a1 where a1.personalId_personalId not in";
                 sql=sql+"(select personalId from PhdDetailsmaster)))";
             }
             else if(studentStatus.equals("Completed")){
